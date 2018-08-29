@@ -22,7 +22,7 @@
             var Shader = null;
             var shadersloaded = false;
             var texturex1 = null;
-            //var texturex2 = null;
+            var texturex2 = null;
             var that = this;
 
             function LoadShader(filenameVertexShader, filenameFragmentShader, index)
@@ -163,7 +163,7 @@
                 console.log('waiting for textures loading');
                 setTimeout(function () {
                     if (catmpt < atmpt) {
-                        if ((!texturex1.isload))
+                        if ((!texturex1.isload)||(!texturex2.isload))
                             waitingtextures();
                         else
                             launchwebgl();
@@ -191,7 +191,7 @@
             });
             function loadtextures() {
                 texturex1 = new Texture("texture1.png");
-                //texturex2 = new Texture("texture2.jpg");
+                texturex2 = new Texture("sw.png");
                 waitingtextures();
             }
 
@@ -217,6 +217,9 @@
                 gl.activeTexture(gl.TEXTURE0);
                 gl.bindTexture(gl.TEXTURE_2D, texturex1.texture);
                 gl.uniform1i(gl.getUniformLocation(Shader, 'u_texture1'), 0);
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, texturex2.texture);
+                gl.uniform1i(gl.getUniformLocation(Shader, 'u_texture2'), 1);
                 gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
                 window.requestAnimationFrame(step);
             }

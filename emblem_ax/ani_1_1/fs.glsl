@@ -357,10 +357,23 @@ void mi_o(out vec4 fragColor, in vec2 fragCoord,float pxx) {
     d = max(d, anil5(uv)*col4 * (1. - circle(tuv, 01.6, 1.5, false, 16.)) * smoothstep(0.023, 0.023 + 2. / iResolution.y, abs(tuv.x) + 1. * step(0., -tuv.y)));
     float dx = squareseg(uv)*max(anil6(uv),anil61(uv));
     d = max(d, col3 * dx);
-    d = max(d, col4 * swordpos(uv)*(1. - dx));
-    //d = max(d, col4 * swordpos(uv));
-    float tz=14.;
+    float tz=2.5;
     vec2 tres=((fragCoord.xy) / iResolution.y);
+    tres.y+=anil4();
+    tres.y=1.-tres.y;
+    
+    tres+=-res/2.;    
+    //tres *= MD(-iTime);
+    tres*=vec2(9./16.,1.);
+    tres+=0.5/(tz*(1.-1.*pxx));
+    tres*=tz;
+    tres*=(1.-1.*pxx);
+    vec3 sw = texture2D(iChannel1,tres).rgb;
+    d = max(d, col4 * sw*(1. - dx));
+    //d = max(d, col4 * swordpos(uv)*(1. - dx));
+    //d = max(d, col4 * swordpos(uv));
+    tz=14.;
+    tres=((fragCoord.xy) / iResolution.y);
 
     tres.y=1.-tres.y;
     tres+=-res/2.;    
@@ -436,7 +449,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     	tcb=vec4(0.);
     	if(anil_w(iTime)>0.){
     	mi_o(tcb,fragCoord,.85*anil_w(iTime));
-        tcb*=1.-2.*anil_w(iTime);
+        tcb*=max(0.,1.-2.8*anil_w(iTime));
         dxf*=.25+anil_w(iTime);}else dxf*=1.25;
         fragColor=max(dxf,dxf+tcb);
     }else fragColor*=1.25;
@@ -446,4 +459,5 @@ void main(void) {
     vec4 fragColor = vec4(0.);
     mainImage(fragColor,gl_FragCoord.xy);
     gl_FragColor = fragColor;
+    gl_FragColor.a=1.;
 }
