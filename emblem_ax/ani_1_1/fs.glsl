@@ -271,7 +271,7 @@ float anil3(){
 
 float anil4(){
     float liTime=iTime;
-    return 0.9-0.9*smoothstep(0.,1.,liTime);
+    return 0.9-0.9*smoothstep(3.,4.,liTime);
 }
 
 float anil5(vec2 uv){
